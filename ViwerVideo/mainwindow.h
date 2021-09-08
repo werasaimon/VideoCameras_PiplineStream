@@ -27,10 +27,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    IVideoCapture *mOpenCV_videoCapture;
-    IVideoCapture *mOpenCV_videoCapture_2;
-    IVideoCapture *mOpenCV_videoCapture_3;
-    IVideoCapture *mOpenCV_videoCapture_4;
+    IVideoCapture *mOpenCV_videoCapture[10];
+    int n_count;
 };
 
 #endif // MAINWINDOW_H
