@@ -41,6 +41,6 @@ INCLUDEPATH += /usr/include/opencv4/
 INCLUDEPATH += /usr/include/opencv4/opencv2
 
 
-PKGCONFIG += xrandr xi xxf86vm x11  opencv4  freetype2
+PKGCONFIG += xrandr xi x11  opencv4  freetype2
 
 SOURCES += main.cpp
