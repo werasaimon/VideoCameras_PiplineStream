@@ -133,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent) :
        ui->opencvFrame4->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(640,480));
     });
 
-    n_count = 1;
+    n_count = 3;
 
 }
 
