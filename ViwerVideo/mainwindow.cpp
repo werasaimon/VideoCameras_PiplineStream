@@ -78,12 +78,22 @@ namespace
     }
 
 
+//    std::string lisen_updsrc_gst_read_video( int port , int fps)
+//    {
+//        std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+//                                     " ! application/x-rtp,media=video,payload=26,clock-rate=90000,encoding-name=JPEG,"
+//                                     "framerate=" + std::to_string(fps) + "/1 ! "
+//                                     "rtpjpegdepay ! jpegdec ! videoconvert ! appsink";
+//        return gst_video_send;
+//    }
+
+
     std::string lisen_updsrc_gst_read_video( int port , int fps)
     {
         std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
-                                     " ! application/x-rtp,media=video,payload=26,clock-rate=90000,encoding-name=JPEG,"
+                                     " ! application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96,"
                                      "framerate=" + std::to_string(fps) + "/1 ! "
-                                     "rtpjpegdepay ! jpegdec ! videoconvert ! appsink";
+                                     "rtph264depay ! decodebin ! videoconvert ! appsink";// max-buffers=1 drop=true";
         return gst_video_send;
     }
 
@@ -123,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent) :
        ui->opencvFrame4->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(640,480));
     });
 
-    n_count = 3;
+    n_count = 1;
 
 }
 

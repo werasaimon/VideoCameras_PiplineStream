@@ -34,29 +34,50 @@ std::string gst_pipeline_cams[]
     "v4l2src device=/dev/video0 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
     " videoconvert ! video/x-raw, width=(int)640, height=(int)480, format=(string)RGB ! videoconvert ! appsink",
 
-    "v4l2src device=/dev/video2 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
-    " videoconvert ! video/x-raw, width=(int)640, height=(int)480, format=(string)RGB ! videoconvert ! appsink",
+//    "v4l2src device=/dev/video2 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
+//    " videoconvert ! video/x-raw, width=(int)640, height=(int)480, format=(string)RGB ! videoconvert ! appsink",
 
-    "v4l2src device=/dev/video4 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
-    " videoconvert ! video/x-raw, width=(int)640, height=(int)480, format=(string)RGB ! videoconvert ! appsink"
+//    "v4l2src device=/dev/video4 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
+//    " videoconvert ! video/x-raw, width=(int)640, height=(int)480, format=(string)RGB ! videoconvert ! appsink"
 };
+
+
+//std::string lisen_src_gst_send_video( std::string ip , int port , int fps=30)
+//{
+//    std::string gst_video_send = "appsrc ! videoconvert ! video/x-raw,format=YUY2,"
+//                                 "width=(int)640"
+//                                 ",height=(int)480"
+//                                 ",framerate=" + std::to_string(fps) + "/1 ! "
+//                                 "jpegenc ! rtpjpegpay ! "
+//                                 "udpsink host=" + ip +
+//                                 " port=" + std::to_string(port) +
+//                                 " sync=false async=false";
+//    return gst_video_send;
+//}
+
 
 
 std::string lisen_src_gst_send_video( std::string ip , int port , int fps=30)
 {
-    std::string gst_video_send = "appsrc ! videoconvert ! video/x-raw,format=YUY2,"
-                                   "width=(int)640"
-                                   ",height=(int)480"
-                                   ",framerate=" + std::to_string(fps) + "/1 ! "
-                                   "jpegenc ! rtpjpegpay ! "
-                                   "udpsink host=" + ip +
-                                   " port=" + std::to_string(port) +
-                                   " sync=false";
+    std::string gst_video_send = "appsrc ! videoconvert ! "
+                                 "x264enc tune=zerolatency bitrate=500 speed-preset=superfast ! queue ! rtph264pay ! "
+                                 "udpsink host=" + ip +
+                                 " port=" + std::to_string(port) +
+                                 " sync=false async=false";
     return gst_video_send;
 }
 
 
-
+//std::string lisen_src_gst_send_video( std::string ip , int port , int fps=30)
+//{
+//    std::string gst_video_send = "appsrc ! video/x-raw, format=BGR ! queue ! videoconvert ! "
+//                                 "video/x-raw, format=BGRx ! nvvidconv ! omxh264enc ! video/x-h264, stream-format=byte-stream ! h264parse ! "
+//                                 "rtph264pay pt=96 config-interval=1 ! "
+//                                 "udpsink host=" + ip +
+//                                 " port=" + std::to_string(port) +
+//                                 " sync=false async=false";
+//    return gst_video_send;
+//}
 
 using namespace std;
 
@@ -69,7 +90,7 @@ int main()
     std::string ip;
     std::cout << "ip addres : "; std::cin >> ip;
 
-    int n = 3;
+    int n = 1;
     std::vector<std::thread> sthreads;
     cv::VideoCapture videoCapture[n];
     cv::VideoWriter  videoWrite[n];
@@ -114,7 +135,7 @@ void stream_write(cv::VideoCapture* videoCap, cv::VideoWriter* videoWrite)
         if(videoWrite->isOpened())
         {
             videoWrite->write(frame);
-            std::cout << "write\n";
+           // std::cout << "write\n";
         }
 
         //show live and wait for a key with timeout long enough to show images
