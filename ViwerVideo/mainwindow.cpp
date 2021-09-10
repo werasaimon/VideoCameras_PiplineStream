@@ -88,14 +88,37 @@ namespace
 //    }
 
 
-    std::string lisen_updsrc_gst_read_video( int port , int fps)
-    {
-        std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
-                                     " ! application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96,"
-                                     "framerate=" + std::to_string(fps) + "/1 ! "
-                                     "rtph264depay ! decodebin ! videoconvert ! appsink";// max-buffers=1 drop=true";
-        return gst_video_send;
-    }
+//    std::string lisen_updsrc_gst_read_video( int port , int fps)
+//    {
+//        std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+//                                     " ! application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96,"
+//                                     "framerate=" + std::to_string(fps) + "/1 ! "
+//                                     "rtph264depay ! decodebin ! videoconvert ! appsink";// max-buffers=1 drop=true";
+//        return gst_video_send;
+//    }
+
+
+
+       std::string lisen_UDP_gst_JPEG_read_video( int port , int fps)
+       {
+           std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+                                        " ! application/x-rtp,media=video,payload=26,clock-rate=90000,encoding-name=JPEG,"
+                                        "framerate=" + std::to_string(fps) + "/1 ! "
+                                        "rtpjpegdepay ! jpegdec ! videoconvert ! appsink max-buffers=15 drop=true sync=0";
+           return gst_video_send;
+       }
+
+
+       std::string lisen_UDP_gst_H264_read_video( int port , int fps)
+       {
+           std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+                                        " ! application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96,"
+                                        "framerate=" + std::to_string(fps) + "/1 ! "
+                                        "rtph264depay ! decodebin ! videoconvert ! appsink max-buffers=15 drop=true sync=0";
+           return gst_video_send;
+       }
+
+
 
 
 }
@@ -156,7 +179,7 @@ void MainWindow::on_InitOpenCV_button_clicked()
 
     for (int i = 0; i < n_count; ++i)
     {
-        mOpenCV_videoCapture[i]->VideoCapture().open(lisen_updsrc_gst_read_video(5000+i,30));
+        mOpenCV_videoCapture[i]->VideoCapture().open(lisen_UDP_gst_H264_read_video(5000+i,30));
 
         if(mOpenCV_videoCapture[i]->VideoCapture().isOpened())
         {
