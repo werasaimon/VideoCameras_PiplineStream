@@ -78,14 +78,47 @@ namespace
     }
 
 
-    std::string lisen_updsrc_gst_read_video( int port , int fps)
-    {
-        std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
-                                     " ! application/x-rtp,media=video,payload=26,clock-rate=90000,encoding-name=JPEG,"
-                                     "framerate=" + std::to_string(fps) + "/1 ! "
-                                     "rtpjpegdepay ! jpegdec ! videoconvert ! appsink";
-        return gst_video_send;
-    }
+//    std::string lisen_updsrc_gst_read_video( int port , int fps)
+//    {
+//        std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+//                                     " ! application/x-rtp,media=video,payload=26,clock-rate=90000,encoding-name=JPEG,"
+//                                     "framerate=" + std::to_string(fps) + "/1 ! "
+//                                     "rtpjpegdepay ! jpegdec ! videoconvert ! appsink";
+//        return gst_video_send;
+//    }
+
+
+//    std::string lisen_updsrc_gst_read_video( int port , int fps)
+//    {
+//        std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+//                                     " ! application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96,"
+//                                     "framerate=" + std::to_string(fps) + "/1 ! "
+//                                     "rtph264depay ! decodebin ! videoconvert ! appsink";// max-buffers=1 drop=true";
+//        return gst_video_send;
+//    }
+
+
+
+       std::string lisen_UDP_gst_JPEG_read_video( int port , int fps)
+       {
+           std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+                                        " ! application/x-rtp,media=video,payload=26,clock-rate=90000,encoding-name=JPEG,"
+                                        "framerate=" + std::to_string(fps) + "/1 ! "
+                                        "rtpjpegdepay ! jpegdec ! videoconvert ! appsink max-buffers=1 drop=true sync=0";
+           return gst_video_send;
+       }
+
+
+       std::string lisen_UDP_gst_H264_read_video( int port , int fps)
+       {
+           std::string gst_video_send = "udpsrc port=" + std::to_string(port) +
+                                        " ! application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96,"
+                                        "framerate=" + std::to_string(fps) + "/1 ! "
+                                        "rtph264depay ! decodebin ! videoconvert ! appsink max-buffers=1 drop=true sync=0";
+           return gst_video_send;
+       }
+
+
 
 
 }
@@ -96,6 +129,36 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    n_count = 1;
+    ui->comboBox_cameras->addItem(QString::number(0));
+    ui->comboBox_codec->setItemText(0,"H264");
+
+
+    /**/
+
+    static QLabel* labels[4] = {};
+    labels[0] = ui->opencvFrame;
+    labels[1] = ui->opencvFrame2;
+    labels[2] = ui->opencvFrame3;
+    labels[3] = ui->opencvFrame4;
+
+
+    /**
+    for (int i = 0; i < 4; ++i )
+    {
+        mOpenCV_videoCapture[i] =  new IVideoCapture(this);
+    }
+
+    for (int i = 0; i < 4; ++i )
+    {
+        connect(mOpenCV_videoCapture[i], &IVideoCapture::newPixmapCapture, this, [&]()
+        {
+           labels[i]->setPixmap(mOpenCV_videoCapture[i]->pixmap().scaled(labels[i]->width(),labels[i]->height()));
+        });
+    }
+
+
+    /**
 
     ///auto gst_c = gstreamer_pipeline_CSI(640,480,640,480,60,0).c_str();
     mOpenCV_videoCapture[0] =  new IVideoCapture(this);
@@ -103,28 +166,103 @@ MainWindow::MainWindow(QWidget *parent) :
     mOpenCV_videoCapture[2] =  new IVideoCapture(this);
     mOpenCV_videoCapture[3] =  new IVideoCapture(this);
 
+    /**/
+
+    for (int i = 0; i < 4; ++i )
+    {
+        mOpenCV_videoCapture[i] =  new IVideoCapture(this);
+
+        /**
+        if(n_count > i)
+        {
+            ui->comboBox_cameras->addItem(QString::number(i));
+        }
+        /**/
+    }
+
+
+    /**
+    for (static int i = 0; i < 4; ++i)
+    {
+        connect(mOpenCV_videoCapture[i], &IVideoCapture::newPixmapCapture, this, [&]()
+        {
+           labels[i]->setPixmap(mOpenCV_videoCapture[i]->pixmap().scaled(labels[i]->width(),labels[i]->height()));
+        });
+    }
+
+    /**/
+
     connect(mOpenCV_videoCapture[0], &IVideoCapture::newPixmapCapture, this, [&]()
     {
-       ui->opencvFrame->setPixmap(mOpenCV_videoCapture[0]->pixmap().scaled(640,480));
+       labels[0]->setPixmap(mOpenCV_videoCapture[0]->pixmap().scaled(labels[0]->width(),labels[0]->height()));
     });
 
     connect(mOpenCV_videoCapture[1], &IVideoCapture::newPixmapCapture, this, [&]()
     {
-        ui->opencvFrame2->setPixmap(mOpenCV_videoCapture[1]->pixmap().scaled(640,480));
+         labels[1]->setPixmap(mOpenCV_videoCapture[1]->pixmap().scaled(labels[1]->width(),labels[1]->height()));
     });
 
     connect(mOpenCV_videoCapture[2], &IVideoCapture::newPixmapCapture, this, [&]()
     {
-        ui->opencvFrame3->setPixmap(mOpenCV_videoCapture[2]->pixmap().scaled(640,480));
+        labels[2]->setPixmap(mOpenCV_videoCapture[2]->pixmap().scaled(labels[2]->width(),labels[2]->height()));
     });
 
     connect(mOpenCV_videoCapture[3], &IVideoCapture::newPixmapCapture, this, [&]()
     {
-       ui->opencvFrame4->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(640,480));
+       labels[3]->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(labels[3]->width(),labels[3]->height()));
     });
 
-    n_count = 3;
+    /**/
 
+
+
+
+        //    labels[0] = ui->opencvFrame;
+        //    labels[1] = ui->opencvFrame2;
+        //    labels[2] = ui->opencvFrame3;
+        //    labels[3] = ui->opencvFrame4;
+
+        ////    mOpenCV_videoCapture[0] =  new IVideoCapture(this);
+
+
+
+
+
+        //   // auto mOpenCV_videoCaptur =  new IVideoCapture(this);
+
+        //    n_count = 2;
+
+
+        //    for (int i = 0; i < 4; ++i )
+        //    {
+        //        mOpenCV_videoCapture[i] =  new IVideoCapture(this);
+
+        //        connect(mOpenCV_videoCapture[i], &IVideoCapture::newPixmapCapture, this, [&]()
+        //        {
+        //           labels[i]->setPixmap(mOpenCV_videoCapture[i]->pixmap().scaled(labels[i]->width(),labels[i]->height()));
+        //        });
+
+        //        if(n_count > i)
+        //        {
+        //           ui->comboBox_cameras->addItem(QString::number(i));
+        //        }
+        //    }
+
+
+//    mOpenCV_videoCapture[4] =  new IVideoCapture(this);
+
+//    connect(mOpenCV_videoCapture[4], &IVideoCapture::newPixmapCapture, this, [&]()
+//    {
+
+//       int index = ui->comboBox_cameras->currentIndex();
+//       ui->OpenCVFrame_main->setPixmap(mOpenCV_videoCapture[index+1]->pixmap().scaled(
+//                   ui->OpenCVFrame_main->width(),ui->OpenCVFrame_main->height()));
+//    });
+
+
+      timer = new QTimer();
+      connect(timer, SIGNAL(timeout()), this, SLOT(slotTimerAlarm()));
+      timer->start(30); // И запустим таймер
 }
 
 MainWindow::~MainWindow()
@@ -144,14 +282,25 @@ MainWindow::~MainWindow()
 void MainWindow::on_InitOpenCV_button_clicked()
 {
 
-    for (int i = 0; i < n_count; ++i)
+    ui->comboBox_cameras->clear();
+        for (int i = 0; i < n_count; ++i)
     {
-        mOpenCV_videoCapture[i]->VideoCapture().open(lisen_updsrc_gst_read_video(5000+i,30));
+
+       if(ui->comboBox_codec->currentText() == QString("H264"))
+       {
+           mOpenCV_videoCapture[i]->VideoCapture().open(lisen_UDP_gst_H264_read_video(5000+i,30));
+       }
+       else if(ui->comboBox_codec->currentText() == QString("JPEG"))
+       {
+           mOpenCV_videoCapture[i]->VideoCapture().open(lisen_UDP_gst_JPEG_read_video(5000+i,30));
+       }
+
 
         if(mOpenCV_videoCapture[i]->VideoCapture().isOpened())
         {
             //  mOpenCV_videoCapture[i]->VideoWriter().open(gst_video_sendd.toStdString().c_str(), 0, (double)30, cv::Size(640, 480), true);
               mOpenCV_videoCapture[i]->start(QThread::HighestPriority);
+              ui->comboBox_cameras->addItem(QString::number(i));
         }
 
     }
@@ -167,4 +316,32 @@ void MainWindow::on_pushButton_stop_clicked()
         mOpenCV_videoCapture[i]->VideoWriter().release();
         mOpenCV_videoCapture[i]->destroyed(this);
     }
+}
+
+void MainWindow::slotTimerAlarm()
+{
+
+           int index = ui->comboBox_cameras->currentIndex();
+           index = (index <= 0 ) ? 0 : index;
+           if(mOpenCV_videoCapture[index])
+           {
+               if(!mOpenCV_videoCapture[index]->pixmap().isNull())
+               {
+                    ui->OpenCVFrame_main->setPixmap(mOpenCV_videoCapture[index]->pixmap().scaled(
+                                                    ui->OpenCVFrame_main->width(),ui->OpenCVFrame_main->height()));
+               }
+           }
+}
+
+void MainWindow::on_spinBox_count_cameras_valueChanged(int arg1)
+{
+    qDebug() << arg1;
+    n_count = arg1;
+
+//    ui->comboBox_cameras->clear();
+//    for (int i = 0; i < n_count; ++i)
+//    {
+//        ui->comboBox_cameras->addItem(QString::number(i));
+
+//    }
 }

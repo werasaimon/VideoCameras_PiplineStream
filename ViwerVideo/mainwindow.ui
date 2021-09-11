@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>790</width>
-    <height>692</height>
+    <width>1143</width>
+    <height>858</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,35 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
+      <item alignment="Qt::AlignRight">
        <widget class="QPushButton" name="InitOpenCV_button">
         <property name="text">
          <string>Init OpenCV</string>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_count_cameras">
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_cameras"/>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_codec">
+        <item>
+         <property name="text">
+          <string>H264</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>JPEG</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -34,45 +58,67 @@
      </layout>
     </item>
     <item row="1" column="0">
-     <widget class="QSplitter" name="splitter_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QSplitter" name="splitter">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QLabel" name="OpenCVFrame_main">
+       <property name="text">
+        <string>ouput main camera</string>
        </property>
-       <widget class="QLabel" name="opencvFrame">
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>opencvFrame1</string>
-        </property>
-        <property name="scaledContents">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="opencvFrame2">
-        <property name="text">
-         <string>opencvFrame2</string>
-        </property>
-       </widget>
       </widget>
-      <widget class="QSplitter" name="splitter_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <widget class="QLabel" name="opencvFrame3">
-        <property name="text">
-         <string>opencvFrame3</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="opencvFrame4">
-        <property name="text">
-         <string>opencvFrame4</string>
-        </property>
-       </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="opencvFrame">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(138, 226, 52);</string>
+          </property>
+          <property name="text">
+           <string>opencvFrame1</string>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="opencvFrame2">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(115, 210, 22);</string>
+          </property>
+          <property name="text">
+           <string>opencvFrame2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="opencvFrame3">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(138, 226, 52);</string>
+          </property>
+          <property name="text">
+           <string>opencvFrame3</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="opencvFrame4">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(138, 226, 52);</string>
+          </property>
+          <property name="text">
+           <string>opencvFrame4</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
