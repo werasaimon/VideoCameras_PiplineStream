@@ -5,7 +5,7 @@ Native build of Qt5 creator on Raspberry Pi 4 or Jetson Nano with OpenCV support
 see [Qt5](https://qengineering.eu/install-qt5-with-opencv-on-raspberry-pi-4.html) where this example is explored. 
 
 
-##How to compile OpenCV with Gstreamer [Ubuntu&Windows] - Desktop version
+## How to compile OpenCV with Gstreamer [Ubuntu&Windows] - Desktop version
 OpenCV and GStremer installed [Install OpenCV | GStremer | : OS-Desktop ] https://galaktyk.medium.com/how-to-build-opencv-with-gstreamer-b11668fa09c
 
 ## Dependencies.
