@@ -16,4 +16,4 @@ To run the application, you have to:
 ## Interface Stremeng 4-cameras
 ![gjkabc](VideoCameras_PiplineStream/data/Streming 4-Cameras.png)
 
-![gjkabc](data/Streming 4-Cameras.png)
+![gjkabc](https://github.com/werasaimon/VideoCameras_PiplineStream/blob/b61608fb3c8a7e9937acd446287d7b925ed9189a/data/Streming%204-Cameras.png)
