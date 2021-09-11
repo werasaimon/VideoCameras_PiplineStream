@@ -3,6 +3,11 @@ Native build of Qt5 creator on Raspberry Pi 4 or Jetson Nano with OpenCV support
 ## A live camera C++ example on a Raspberry Pi 4 / Jetson Nano with Qt5 GUI using OpenCV <br/> 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)<br/><br/>
 see [Qt5](https://qengineering.eu/install-qt5-with-opencv-on-raspberry-pi-4.html) where this example is explored. 
+
+
+##How to compile OpenCV with Gstreamer [Ubuntu&Windows] - Desktop version
+OpenCV and GStremer installed [Install OpenCV | GStremer | : OS-Desktop ] https://galaktyk.medium.com/how-to-build-opencv-with-gstreamer-b11668fa09c
+
 ## Dependencies.
 To run the application, you have to:
 - Qt5 installed [Install Qt5](https://qengineering.eu/install-qt5-with-opencv-on-raspberry-pi-4.html)<br/>
