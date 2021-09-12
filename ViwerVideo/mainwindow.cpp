@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "ivideocapture.h"
+#include "../Common/ivideocapture.h"
 
 
 #include <QDebug>
@@ -143,41 +143,9 @@ MainWindow::MainWindow(QWidget *parent) :
     labels[3] = ui->opencvFrame4;
 
 
-    /**
     for (int i = 0; i < 4; ++i )
     {
         mOpenCV_videoCapture[i] =  new IVideoCapture(this);
-    }
-
-    for (int i = 0; i < 4; ++i )
-    {
-        connect(mOpenCV_videoCapture[i], &IVideoCapture::newPixmapCapture, this, [&]()
-        {
-           labels[i]->setPixmap(mOpenCV_videoCapture[i]->pixmap().scaled(labels[i]->width(),labels[i]->height()));
-        });
-    }
-
-
-    /**
-
-    ///auto gst_c = gstreamer_pipeline_CSI(640,480,640,480,60,0).c_str();
-    mOpenCV_videoCapture[0] =  new IVideoCapture(this);
-    mOpenCV_videoCapture[1] =  new IVideoCapture(this);
-    mOpenCV_videoCapture[2] =  new IVideoCapture(this);
-    mOpenCV_videoCapture[3] =  new IVideoCapture(this);
-
-    /**/
-
-    for (int i = 0; i < 4; ++i )
-    {
-        mOpenCV_videoCapture[i] =  new IVideoCapture(this);
-
-        /**
-        if(n_count > i)
-        {
-            ui->comboBox_cameras->addItem(QString::number(i));
-        }
-        /**/
     }
 
 
@@ -209,60 +177,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(mOpenCV_videoCapture[3], &IVideoCapture::newPixmapCapture, this, [&]()
     {
-       labels[3]->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(labels[3]->width(),labels[3]->height()));
+        labels[3]->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(labels[3]->width(),labels[3]->height()));
     });
 
     /**/
 
 
-
-
-        //    labels[0] = ui->opencvFrame;
-        //    labels[1] = ui->opencvFrame2;
-        //    labels[2] = ui->opencvFrame3;
-        //    labels[3] = ui->opencvFrame4;
-
-        ////    mOpenCV_videoCapture[0] =  new IVideoCapture(this);
-
-
-
-
-
-        //   // auto mOpenCV_videoCaptur =  new IVideoCapture(this);
-
-        //    n_count = 2;
-
-
-        //    for (int i = 0; i < 4; ++i )
-        //    {
-        //        mOpenCV_videoCapture[i] =  new IVideoCapture(this);
-
-        //        connect(mOpenCV_videoCapture[i], &IVideoCapture::newPixmapCapture, this, [&]()
-        //        {
-        //           labels[i]->setPixmap(mOpenCV_videoCapture[i]->pixmap().scaled(labels[i]->width(),labels[i]->height()));
-        //        });
-
-        //        if(n_count > i)
-        //        {
-        //           ui->comboBox_cameras->addItem(QString::number(i));
-        //        }
-        //    }
-
-
-//    mOpenCV_videoCapture[4] =  new IVideoCapture(this);
-
-//    connect(mOpenCV_videoCapture[4], &IVideoCapture::newPixmapCapture, this, [&]()
-//    {
-
-//       int index = ui->comboBox_cameras->currentIndex();
-//       ui->OpenCVFrame_main->setPixmap(mOpenCV_videoCapture[index+1]->pixmap().scaled(
-//                   ui->OpenCVFrame_main->width(),ui->OpenCVFrame_main->height()));
-//    });
-
-
-      timer = new QTimer();
-      connect(timer, SIGNAL(timeout()), this, SLOT(slotTimerAlarm()));
-      timer->start(30); // И запустим таймер
+    timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(slotTimerAlarm()));
+    timer->start(30); // И запустим таймер
 }
 
 MainWindow::~MainWindow()
@@ -281,28 +204,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_InitOpenCV_button_clicked()
 {
-
     ui->comboBox_cameras->clear();
-        for (int i = 0; i < n_count; ++i)
+    for (int i = 0; i < n_count; ++i)
     {
-
+        bool isOpen=false;
        if(ui->comboBox_codec->currentText() == QString("H264"))
        {
-           mOpenCV_videoCapture[i]->VideoCapture().open(lisen_UDP_gst_H264_read_video(5000+i,30));
+           isOpen=mOpenCV_videoCapture[i]->VideoCapture().open(lisen_UDP_gst_H264_read_video(5000+i,30));
        }
        else if(ui->comboBox_codec->currentText() == QString("JPEG"))
        {
-           mOpenCV_videoCapture[i]->VideoCapture().open(lisen_UDP_gst_JPEG_read_video(5000+i,30));
+           isOpen=mOpenCV_videoCapture[i]->VideoCapture().open(lisen_UDP_gst_JPEG_read_video(5000+i,30));
        }
 
-
-        if(mOpenCV_videoCapture[i]->VideoCapture().isOpened())
+        if(isOpen == true)
         {
-            //  mOpenCV_videoCapture[i]->VideoWriter().open(gst_video_sendd.toStdString().c_str(), 0, (double)30, cv::Size(640, 480), true);
-              mOpenCV_videoCapture[i]->start(QThread::HighestPriority);
-              ui->comboBox_cameras->addItem(QString::number(i));
+            qDebug() << "Start";
+            mOpenCV_videoCapture[i]->setIsRun(true);
+            mOpenCV_videoCapture[i]->start(QThread::HighestPriority);
+            ui->comboBox_cameras->addItem(QString::number(i));
         }
-
     }
 
 }
@@ -312,9 +233,10 @@ void MainWindow::on_pushButton_stop_clicked()
 
     for (int i = 0; i < n_count; ++i)
     {
-        mOpenCV_videoCapture[i]->VideoCapture().release();
-        mOpenCV_videoCapture[i]->VideoWriter().release();
-        mOpenCV_videoCapture[i]->destroyed(this);
+        mOpenCV_videoCapture[i]->setIsRun(false);
+//        mOpenCV_videoCapture[i]->VideoCapture().release();
+//        //mOpenCV_videoCapture[i]->VideoWriter().release();
+//        mOpenCV_videoCapture[i]->destroyed(nullptr);
     }
 }
 

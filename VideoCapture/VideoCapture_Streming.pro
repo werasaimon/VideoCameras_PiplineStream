@@ -1,7 +1,11 @@
+QT  += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 TEMPLATE = app
 CONFIG += console c++11
-CONFIG -= app_bundle
-CONFIG -= qt
+#CONFIG -= app_bundle
+#CONFIG -= qt
 
 
 CONFIG += c++11
@@ -43,4 +47,8 @@ INCLUDEPATH += /usr/include/opencv4/opencv2
 
 PKGCONFIG += xrandr xi x11  opencv4  freetype2
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    ../Common/ivideocapture.cpp
+
+HEADERS += \
+    ../Common/ivideocapture.h

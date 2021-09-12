@@ -35,13 +35,13 @@ CONFIG += link_pkgconfig
 PKGCONFIG += opencv4
 
 SOURCES += \
+        ../Common/ivideocapture.cpp \
         main.cpp \
-        mainwindow.cpp \
-    ivideocapture.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    ivideocapture.h
+        ../Common/ivideocapture.h \
+        mainwindow.h
 
 FORMS += \
         mainwindow.ui
