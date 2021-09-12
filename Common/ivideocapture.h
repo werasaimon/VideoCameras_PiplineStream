@@ -22,6 +22,8 @@ public:
     cv::VideoCapture &VideoCapture();
     cv::VideoWriter &VideoWriter();
 
+    void setIsRun(bool newIsRun);
+
 signals:
     void newPixmapCapture(); //capture a frame
 protected:
@@ -31,6 +33,7 @@ private:
     cv::Mat mFrame;               //OpenCV image
     cv::VideoCapture mVideoCapture;   //video capture
     cv::VideoWriter  mVideoWriter;   //video write
+    bool isRun;
 
     QImage cvMatToQImage(const cv::Mat &inMat);
     QPixmap cvMatToQPixmap(const cv::Mat &inMat );
