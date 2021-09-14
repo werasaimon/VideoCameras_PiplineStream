@@ -36,14 +36,19 @@ PKGCONFIG += opencv4
 
 SOURCES += \
         ../Common/ivideocapture.cpp \
+        fullwindow.cpp \
+        labelvideo.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
         ../Common/ivideocapture.h \
+        fullwindow.h \
+        labelvideo.h \
         mainwindow.h
 
 FORMS += \
+        fullwindow.ui \
         mainwindow.ui
 
 # Default rules for deployment.

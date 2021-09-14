@@ -7,8 +7,10 @@ CONFIG += console c++11
 #CONFIG -= app_bundle
 #CONFIG -= qt
 
-
 CONFIG += c++11
+
+#DEFINES += ENABLED_NVIDIA_JETSON
+
 
 INCLUDEPATH += /usr/include/opencv4
 DEPENDPATH += /usr/include/opencv4

@@ -1,22 +1,39 @@
 #include "ivideocapture.h"
+#include <QImage>
+#include <QPainter>
 #include <QDebug>
 
 
 
-IVideoCapture::IVideoCapture(QObject *parent)
-    :QThread { parent }
+IVideoCapture::IVideoCapture(QObject *parent, QString _Name)
+    :QThread { parent } ,
+    isRun(false) ,
+    m_Name(_Name)
+
 {
 }
 
 IVideoCapture::~IVideoCapture()
 {
-    mVideoCapture.release();
-    mVideoWriter.release();
-    terminate();
+   isRun = false;
+   exit(0);
+
+   mVideoCapture.release();
+   mVideoWriter.release();
+
+   //terminate();
 }
 
 void IVideoCapture::run()
 {  
+
+    if(mVideoWriter.isOpened())
+    {
+      std::cout  << " \n ------------------------------- \n "
+                    "start writer cpture video  |OK| \n"
+                    " \n ------------------------------- \n ";
+    }
+
      while (isRun)
      {
         if(mVideoCapture.isOpened())
@@ -27,18 +44,46 @@ void IVideoCapture::run()
              if(mVideoWriter.isOpened())
              {
                 mVideoWriter << mFrame;
-                qDebug() << "writer \r";
+
              }
 
-             qDebug() << "read \r";
-
-             mPixmap = cvMatToQPixmap(mFrame);
+             mPixmap = cvMatToQPixmap(mFrame,isText,m_Name);
              emit newPixmapCapture();
 
            }
         }
      }
 
+}
+
+bool IVideoCapture::getIsText() const
+{
+    return isText;
+}
+
+void IVideoCapture::setIsText(bool newIsText)
+{
+    isText = newIsText;
+}
+
+const QString &IVideoCapture::Name() const
+{
+    return m_Name;
+}
+
+bool IVideoCapture::getIsWindow() const
+{
+    return isWindow;
+}
+
+void IVideoCapture::setIsWindow(bool newIsWindow)
+{
+    isWindow = newIsWindow;
+}
+
+bool IVideoCapture::getIsRun() const
+{
+    return isRun;
 }
 
 void IVideoCapture::setIsRun(bool newIsRun)
@@ -56,9 +101,11 @@ cv::VideoWriter &IVideoCapture::VideoWriter()
     return mVideoWriter;
 }
 
-QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat )
+QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat , bool isText , QString _str)
 {
-    switch ( inMat.type() )
+
+
+  switch ( inMat.type() )
   {
      // 8-bit, 4 channel
      case CV_8UC4:
@@ -67,6 +114,23 @@ QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat )
                       inMat.cols, inMat.rows,
                       static_cast<int>(inMat.step),
                       QImage::Format_ARGB32 );
+
+        if( isText )
+        {
+            QPainter painter(&image);
+            //painter.setBrush(QBrush(Qt::green));
+            //painter.fillRect(QRectF(0,0,400,300),Qt::green);
+            //painter.fillRect(QRectF(100,100,200,100),Qt::white);
+
+            QFont* FontText = new QFont("Serif", 20, QFont::Normal);
+
+            painter.setPen(QPen(Qt::green));
+            painter.setFont(*FontText);
+            painter.drawText(20,40,_str);
+
+            delete FontText;
+
+        }
 
         return image;
      }
@@ -78,6 +142,23 @@ QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat )
                       inMat.cols, inMat.rows,
                       static_cast<int>(inMat.step),
                       QImage::Format_RGB888 );
+
+        if( isText )
+        {
+            QPainter painter(&image);
+            //painter.setBrush(QBrush(Qt::green));
+            //painter.fillRect(QRectF(0,0,400,300),Qt::green);
+            //painter.fillRect(QRectF(100,100,200,100),Qt::white);
+
+            QFont* FontText = new QFont("Serif", 20, QFont::Normal);
+
+            painter.setPen(QPen(Qt::green));
+            painter.setFont(*FontText);
+            painter.drawText(20,40,_str);
+
+            delete FontText;
+
+        }
 
         return image.rgbSwapped();
      }
@@ -112,6 +193,23 @@ QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat )
         image.setColorTable( sColorTable );
 #endif
 
+        if( isText )
+        {
+            QPainter painter(&image);
+            //painter.setBrush(QBrush(Qt::green));
+            //painter.fillRect(QRectF(0,0,400,300),Qt::green);
+            //painter.fillRect(QRectF(100,100,200,100),Qt::white);
+
+            QFont* FontText = new QFont("Serif", 20, QFont::Normal);
+
+            painter.setPen(QPen(Qt::green));
+            painter.setFont(*FontText);
+            painter.drawText(20,40,_str);
+
+            delete FontText;
+
+        }
+
         return image;
      }
 
@@ -122,7 +220,7 @@ QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat )
 
   return QImage();
 }
-QPixmap IVideoCapture::cvMatToQPixmap( const cv::Mat &inMat )
+QPixmap IVideoCapture::cvMatToQPixmap(const cv::Mat &inMat , bool isText, QString _str)
 {
-  return QPixmap::fromImage( cvMatToQImage( inMat ) );
+  return QPixmap::fromImage( cvMatToQImage( inMat , isText , _str) );
 }
