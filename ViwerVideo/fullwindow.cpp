@@ -2,6 +2,10 @@
 #include "ui_fullwindow.h"
 #include "../Common/ivideocapture.h"
 
+#include <QDebug>
+#include <QScreen>
+
+
 FullWindow::FullWindow(IVideoCapture *_videoCapture, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FullWindow),
@@ -14,6 +18,8 @@ FullWindow::FullWindow(IVideoCapture *_videoCapture, QWidget *parent) :
        setWindowTitle( mOpenCV_videoCapture->Name() );
     }
 
+    //setWindowFlags((windowFlags() | Qt::CustomizeWindowHint));
+
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(slotTimerAlarm()));
     timer->start(30); // И запустим таймер
@@ -24,13 +30,10 @@ FullWindow::~FullWindow()
     delete ui;
 }
 
-Ui::FullWindow *FullWindow::getUi() const
-{
-    return ui;
-}
-
 void FullWindow::closeEvent(QCloseEvent *event)
 {
+    QWidget::closeEvent(event);
+
     QMessageBox::StandardButton resBtn = QMessageBox::question( this, "APP_CAMERA",
                                                                 tr("Exit to Camera\n"),
                                                                 QMessageBox::Cancel | QMessageBox::Yes,
@@ -40,11 +43,19 @@ void FullWindow::closeEvent(QCloseEvent *event)
         event->ignore();
     }
     else
-    {   timer->stop();
+    {
+        timer->stop();
         mOpenCV_videoCapture->setIsWindow(false);
         event->accept();
     }
 }
+
+
+void FullWindow::resizeEvent(QResizeEvent *event)
+{
+   ui->labelOutVideo->setGeometry(0,0,event->size().width(),event->size().height());
+}
+
 
 void FullWindow::slotTimerAlarm()
 {
@@ -52,7 +63,8 @@ void FullWindow::slotTimerAlarm()
     {
         if(!mOpenCV_videoCapture->pixmap().isNull())
         {
-            ui->labelOutVideo->setPixmap(mOpenCV_videoCapture->pixmap().scaled(ui->labelOutVideo->width(),ui->labelOutVideo->height()));
+            ui->labelOutVideo->setPixmap(mOpenCV_videoCapture->pixmap().scaled(ui->labelOutVideo->width(),
+                                                                               ui->labelOutVideo->height()));
         }
     }
 }
@@ -61,4 +73,6 @@ void FullWindow::setOpenCV_videoCapture(IVideoCapture *newOpenCV_videoCapture)
 {
     mOpenCV_videoCapture = newOpenCV_videoCapture;
 }
+
+
 

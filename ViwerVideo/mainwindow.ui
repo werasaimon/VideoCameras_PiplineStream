@@ -67,6 +67,9 @@
         <property name="text">
          <string>Info</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item alignment="Qt::AlignRight">
@@ -86,6 +89,15 @@
     </item>
     <item row="1" column="0">
      <widget class="QSplitter" name="splitter_3">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(136, 138, 133);</string>
+      </property>
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
@@ -93,7 +105,10 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="LabelVideo" name="opencvFrame">
+       <property name="opaqueResize">
+        <bool>true</bool>
+       </property>
+       <widget class="LabelVideo" name="opencvFrame1">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
           <horstretch>0</horstretch>

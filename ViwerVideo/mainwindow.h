@@ -24,9 +24,7 @@ public:
     ~MainWindow();
 
 
-    void resizeEvent(QResizeEvent* event);
-
-
+    //void resizeEvent(QResizeEvent* event);
     void mousePressEvent(QMouseEvent *event);
     //void mouseMoveEvent(QMouseEvent *e);
     //void mouseReleaseEvent(QMouseEvent *event);
@@ -39,6 +37,7 @@ private slots:
 
 
     void on_checkBox_Info_toggled(bool checked);
+
 
 private:
     Ui::MainWindow *ui;

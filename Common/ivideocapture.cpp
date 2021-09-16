@@ -8,6 +8,7 @@
 IVideoCapture::IVideoCapture(QObject *parent, QString _Name)
     :QThread { parent } ,
     isRun(false) ,
+    isWindow(false),
     m_Name(_Name)
 
 {
@@ -44,7 +45,6 @@ void IVideoCapture::run()
              if(mVideoWriter.isOpened())
              {
                 mVideoWriter << mFrame;
-
              }
 
              mPixmap = cvMatToQPixmap(mFrame,isText,m_Name);
@@ -53,7 +53,6 @@ void IVideoCapture::run()
            }
         }
      }
-
 }
 
 bool IVideoCapture::getIsText() const
@@ -69,6 +68,11 @@ void IVideoCapture::setIsText(bool newIsText)
 const QString &IVideoCapture::Name() const
 {
     return m_Name;
+}
+
+void IVideoCapture::setName(const QString &_str)
+{
+    m_Name = _str;
 }
 
 bool IVideoCapture::getIsWindow() const

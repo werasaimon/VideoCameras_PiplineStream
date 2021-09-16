@@ -30,6 +30,7 @@ public:
     void setIsWindow(bool newIsWindow);
 
     const QString &Name() const;
+    void setName(const QString& _str);
 
     bool getIsText() const;
     void setIsText(bool newIsText);

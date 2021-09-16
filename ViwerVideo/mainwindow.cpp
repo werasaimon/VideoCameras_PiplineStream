@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /**/
 
-    video_labels[0] = ui->opencvFrame;
+    video_labels[0] = ui->opencvFrame1;
     video_labels[1] = ui->opencvFrame2;
     video_labels[2] = ui->opencvFrame3;
     video_labels[3] = ui->opencvFrame4;
@@ -63,15 +63,68 @@ MainWindow::MainWindow(QWidget *parent) :
         mOpenCV_videoCapture[i] =  new IVideoCapture(this , "Camera " + QString::number(i+1));
         video_labels[i]->setIndexCamera(i);
         video_labels[i]->setOpenCV_videoCapture(mOpenCV_videoCapture[i]);
+
     }
+
 
 
     connect(mOpenCV_videoCapture[0], &IVideoCapture::newPixmapCapture, this, [&]()
     {
 
-       video_labels[0]->setPixmap(mOpenCV_videoCapture[0]->pixmap().scaled(video_labels[0]->width(),video_labels[0]->height()));
+       if(mOpenCV_videoCapture[0]->getIsRun())
+       {
+           video_labels[0]->setPixmap(mOpenCV_videoCapture[0]->pixmap().scaled(video_labels[0]->width(),video_labels[0]->height()));
+       }
+       else
+       {
+           video_labels[0]->setText("Camera[0]");
+       }
     });
 
+
+
+    connect(mOpenCV_videoCapture[1], &IVideoCapture::newPixmapCapture, this, [&]()
+    {
+
+       if(mOpenCV_videoCapture[1]->getIsRun())
+       {
+           video_labels[1]->setPixmap(mOpenCV_videoCapture[1]->pixmap().scaled(video_labels[1]->width(),video_labels[1]->height()));
+       }
+       else
+       {
+           video_labels[1]->setText("Camera[1]");
+       }
+    });
+
+
+    connect(mOpenCV_videoCapture[2], &IVideoCapture::newPixmapCapture, this, [&]()
+    {
+
+       if(mOpenCV_videoCapture[2]->getIsRun())
+       {
+           video_labels[2]->setPixmap(mOpenCV_videoCapture[2]->pixmap().scaled(video_labels[2]->width(),video_labels[2]->height()));
+       }
+       else
+       {
+           video_labels[2]->setText("Camera[2]");
+       }
+    });
+
+
+    connect(mOpenCV_videoCapture[3], &IVideoCapture::newPixmapCapture, this, [&]()
+    {
+
+       if(mOpenCV_videoCapture[3]->getIsRun())
+       {
+           video_labels[3]->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(video_labels[3]->width(),video_labels[3]->height()));
+       }
+       else
+       {
+           video_labels[3]->setText("Camera[3]");
+       }
+    });
+
+    /**
     connect(mOpenCV_videoCapture[1], &IVideoCapture::newPixmapCapture, this, [&]()
     {
          video_labels[1]->setPixmap(mOpenCV_videoCapture[1]->pixmap().scaled(video_labels[1]->width(),video_labels[1]->height()));
@@ -87,7 +140,7 @@ MainWindow::MainWindow(QWidget *parent) :
         video_labels[3]->setPixmap(mOpenCV_videoCapture[3]->pixmap().scaled(video_labels[3]->width(),video_labels[3]->height()));
     });
 
-    /**/
+    **/
 }
 
 
@@ -106,12 +159,11 @@ MainWindow::~MainWindow()
     }
 }
 
-void MainWindow::resizeEvent(QResizeEvent *event)
-{
-    QMainWindow::resizeEvent(event);
-    // Your code here.
-
-}
+//void MainWindow::resizeEvent(QResizeEvent *event)
+//{
+//    QMainWindow::resizeEvent(event);
+//    // Your code here.
+//}
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
@@ -184,6 +236,7 @@ void MainWindow::on_InitOpenCV_button_clicked()
         ui->comboBox_codec->setEditable(true);
         ui->comboBox_codec->setDisabled(false);
         ui->spinBox_count_cameras->setEnabled(true);
+
     }
 }
 
@@ -205,7 +258,6 @@ void MainWindow::on_spinBox_count_cameras_valueChanged(int arg1)
 
 void MainWindow::on_checkBox_Info_toggled(bool checked)
 {
-
     for (int i = 0; i < MAX_COUNT_CAMERAS; ++i)
     {
         if(mOpenCV_videoCapture[i])
