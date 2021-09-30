@@ -1,4 +1,4 @@
-QT  += core gui
+QT  += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -50,7 +50,14 @@ INCLUDEPATH += /usr/include/opencv4/opencv2
 PKGCONFIG += xrandr xi x11  opencv4  freetype2
 
 SOURCES += main.cpp \
-    ../Common/ivideocapture.cpp
+    ../Common/blockreader.cpp \
+    ../Common/blockwriter.cpp \
+    ../Common/ivideocapture.cpp \
+    itcpserver.cpp
 
 HEADERS += \
-    ../Common/ivideocapture.h
+    ../Common/blockreader.h \
+    ../Common/blockwriter.h \
+    ../Common/ivideocapture.h \
+    itcpserver.h \
+    scommand.hpp
