@@ -1,20 +1,21 @@
-#ifndef IVIDEOCAPTURE_H
-#define IVIDEOCAPTURE_H
+#ifndef IVIDEOTHREAD_H
+#define IVIDEOTHREAD_H
 
 #include <QPixmap>
 #include <QImage>
 #include <QThread>
 #include <QString>
 #include <opencv2/opencv.hpp>
+#include "scommand.hpp"
 
 #define ID_CAMERA 0
 
-class IVideoCapture : public QThread
+class IVideoThread : public QThread
 {
     Q_OBJECT
 public:
-    IVideoCapture(QObject *parent = nullptr , QString _Name = 0);
-    ~IVideoCapture();
+    IVideoThread(QObject *parent = nullptr , QString _Name = 0);
+    ~IVideoThread();
 
     QPixmap pixmap() const
     {
@@ -54,4 +55,4 @@ private:
     QPixmap cvMatToQPixmap(const cv::Mat &inMat, bool isText , QString _str);
 };
 
-#endif // IVIDEOCAPTURE_H
+#endif // IVIDEOTHREAD_H

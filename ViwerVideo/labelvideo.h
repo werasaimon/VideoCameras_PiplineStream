@@ -5,7 +5,7 @@
 #include <QObject>
 
 class FullWindow;
-class IVideoCapture;
+class IVideoThread;
 class LabelVideo : public QLabel
 {
     Q_OBJECT
@@ -14,7 +14,7 @@ public:
 
     void mouseDoubleClickEvent( QMouseEvent * event );
 
-    void setOpenCV_videoCapture(IVideoCapture *newOpenCV_videoCapture);
+    void setOpenCV_videoCapture(IVideoThread *newOpenCV_videoCapture);
 
     int IndexCamera() const;
     void setIndexCamera(int newIndexCamera);
@@ -23,7 +23,7 @@ public:
 private:
 
     int m_IndexCamera;
-    IVideoCapture *mOpenCV_videoCapture;
+    IVideoThread *mOpenCV_videoCapture;
     FullWindow *m_FullWindow;
 };
 

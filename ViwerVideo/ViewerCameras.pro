@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -35,14 +35,15 @@ CONFIG += link_pkgconfig
 PKGCONFIG += opencv4
 
 SOURCES += \
-        ../Common/ivideocapture.cpp \
+        ../Common/IVideoThread.cpp \
         fullwindow.cpp \
         labelvideo.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
-        ../Common/ivideocapture.h \
+        ../Common/IVideoThread.h \
+        ../Common/scommand.hpp \
         fullwindow.h \
         labelvideo.h \
         mainwindow.h

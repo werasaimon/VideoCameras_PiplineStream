@@ -1,6 +1,6 @@
 #include "labelvideo.h"
 #include "fullwindow.h"
-#include "../Common/ivideocapture.h"
+#include "../Common/IVideoThread.h"
 #include <QMouseEvent>
 #include <QDebug>
 
@@ -35,7 +35,7 @@ void LabelVideo::mouseDoubleClickEvent(QMouseEvent *event)
     }
 }
 
-void LabelVideo::setOpenCV_videoCapture(IVideoCapture *newOpenCV_videoCapture)
+void LabelVideo::setOpenCV_videoCapture(IVideoThread *newOpenCV_videoCapture)
 {
     mOpenCV_videoCapture = newOpenCV_videoCapture;
 }

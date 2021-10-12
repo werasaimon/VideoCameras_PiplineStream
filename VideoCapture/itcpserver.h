@@ -17,7 +17,7 @@
 #include <QTimer>
 #include <QDebug>
 
-#include "../Common/ivideocapture.h"
+#include "../Common/IVideoThread.h"
 
 class ITcpServer : public QObject
 {
@@ -36,6 +36,7 @@ public slots:
 
 private:
 
+    void test(QStringList list);
     void startcam(QStringList list);
     void scam(QStringList list);
 
@@ -51,7 +52,7 @@ private:
     QTcpServer * mTcpServer;
     QTcpSocket * mTcpSocket;
 
-    IVideoCapture *thread[10];
+    IVideoThread *thread[10];
 
 
 };

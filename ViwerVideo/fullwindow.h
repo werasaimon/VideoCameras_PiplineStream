@@ -13,16 +13,16 @@ namespace Ui {
 class FullWindow;
 }
 
-class IVideoCapture;
+class IVideoThread;
 class FullWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FullWindow(IVideoCapture *_videoCapture = nullptr, QWidget *parent = nullptr);
+    explicit FullWindow(IVideoThread *_videoCapture = nullptr, QWidget *parent = nullptr);
     ~FullWindow();
 
-    void setOpenCV_videoCapture(IVideoCapture *newOpenCV_videoCapture);
+    void setOpenCV_videoCapture(IVideoThread *newOpenCV_videoCapture);
 
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent* event) override;
@@ -36,7 +36,7 @@ private:
     Ui::FullWindow *ui;
     QTimer *timer;
 
-   IVideoCapture *mOpenCV_videoCapture;
+   IVideoThread *mOpenCV_videoCapture;
 };
 
 #endif // FULLWINDOW_H

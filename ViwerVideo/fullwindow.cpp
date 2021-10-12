@@ -1,12 +1,12 @@
 #include "fullwindow.h"
 #include "ui_fullwindow.h"
-#include "../Common/ivideocapture.h"
+#include "../Common/IVideoThread.h"
 
 #include <QDebug>
 #include <QScreen>
 
 
-FullWindow::FullWindow(IVideoCapture *_videoCapture, QWidget *parent) :
+FullWindow::FullWindow(IVideoThread *_videoCapture, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FullWindow),
     mOpenCV_videoCapture(_videoCapture)
@@ -69,7 +69,7 @@ void FullWindow::slotTimerAlarm()
     }
 }
 
-void FullWindow::setOpenCV_videoCapture(IVideoCapture *newOpenCV_videoCapture)
+void FullWindow::setOpenCV_videoCapture(IVideoThread *newOpenCV_videoCapture)
 {
     mOpenCV_videoCapture = newOpenCV_videoCapture;
 }

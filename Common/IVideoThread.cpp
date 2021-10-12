@@ -1,11 +1,11 @@
-#include "ivideocapture.h"
+#include "IVideoThread.h"
 #include <QImage>
 #include <QPainter>
 #include <QDebug>
 
 
 
-IVideoCapture::IVideoCapture(QObject *parent, QString _Name)
+IVideoThread::IVideoThread(QObject *parent, QString _Name)
     :QThread { parent } ,
     isRun(false) ,
     isWindow(false),
@@ -14,7 +14,7 @@ IVideoCapture::IVideoCapture(QObject *parent, QString _Name)
 {
 }
 
-IVideoCapture::~IVideoCapture()
+IVideoThread::~IVideoThread()
 {
    isRun = false;
    exit(0);
@@ -25,8 +25,8 @@ IVideoCapture::~IVideoCapture()
    //terminate();
 }
 
-void IVideoCapture::run()
-{  
+void IVideoThread::run()
+{
 
     if(mVideoWriter.isOpened())
     {
@@ -55,57 +55,57 @@ void IVideoCapture::run()
      }
 }
 
-bool IVideoCapture::getIsText() const
+bool IVideoThread::getIsText() const
 {
     return isText;
 }
 
-void IVideoCapture::setIsText(bool newIsText)
+void IVideoThread::setIsText(bool newIsText)
 {
     isText = newIsText;
 }
 
-const QString &IVideoCapture::Name() const
+const QString &IVideoThread::Name() const
 {
     return m_Name;
 }
 
-void IVideoCapture::setName(const QString &_str)
+void IVideoThread::setName(const QString &_str)
 {
     m_Name = _str;
 }
 
-bool IVideoCapture::getIsWindow() const
+bool IVideoThread::getIsWindow() const
 {
     return isWindow;
 }
 
-void IVideoCapture::setIsWindow(bool newIsWindow)
+void IVideoThread::setIsWindow(bool newIsWindow)
 {
     isWindow = newIsWindow;
 }
 
-bool IVideoCapture::getIsRun() const
+bool IVideoThread::getIsRun() const
 {
     return isRun;
 }
 
-void IVideoCapture::setIsRun(bool newIsRun)
+void IVideoThread::setIsRun(bool newIsRun)
 {
     isRun = newIsRun;
 }
 
-cv::VideoCapture &IVideoCapture::VideoCapture()
+cv::VideoCapture &IVideoThread::VideoCapture()
 {
     return mVideoCapture;
 }
 
-cv::VideoWriter &IVideoCapture::VideoWriter()
+cv::VideoWriter &IVideoThread::VideoWriter()
 {
     return mVideoWriter;
 }
 
-QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat , bool isText , QString _str)
+QImage IVideoThread::cvMatToQImage( const cv::Mat &inMat , bool isText , QString _str)
 {
 
 
@@ -224,7 +224,7 @@ QImage IVideoCapture::cvMatToQImage( const cv::Mat &inMat , bool isText , QStrin
 
   return QImage();
 }
-QPixmap IVideoCapture::cvMatToQPixmap(const cv::Mat &inMat , bool isText, QString _str)
+QPixmap IVideoThread::cvMatToQPixmap(const cv::Mat &inMat , bool isText, QString _str)
 {
   return QPixmap::fromImage( cvMatToQImage( inMat , isText , _str) );
 }

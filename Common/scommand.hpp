@@ -2,8 +2,8 @@
 #define SCOMMAND_HPP
 
 #include <string>
-
-
+namespace cm
+{
 #if ENABLED_NVIDIA_JETSON
 static std::string gst_pipeline_cams[]
 {
@@ -35,9 +35,7 @@ static std::string gst_pipeline_cams[]
 #endif
 
 
-
-
-static std::string lisen_src_gst_JPEG_send_video( std::string ip , int port , int fps=30)
+static std::string udp_gst_JPEG_send_video( std::string ip , int port , int fps=30)
 {
     std::string gst_video_send = "appsrc ! videoconvert ! video/x-raw,format=YUY2,"
                                  "width=(int)640"
@@ -52,7 +50,7 @@ static std::string lisen_src_gst_JPEG_send_video( std::string ip , int port , in
 
 
 
-static std::string lisen_src_gst_H264_send_video( std::string ip , int port , int bitrate=500)
+static std::string udp_gst_H264_send_video( std::string ip , int port , int bitrate=500)
 {
     std::string gst_video_send = "appsrc ! videoconvert ! "
                                  "x264enc tune=zerolatency bitrate=" + std::to_string(bitrate) + " speed-preset=superfast ! queue ! rtph264pay ! "
@@ -61,5 +59,8 @@ static std::string lisen_src_gst_H264_send_video( std::string ip , int port , in
                                  " sync=false async=false";
     return gst_video_send;
 }
+
+}
+
 
 #endif // SCOMMAND_HPP
