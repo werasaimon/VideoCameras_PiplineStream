@@ -1,4 +1,4 @@
-# Qt5-OpenCV-Raspberry-Pi
+# Qt5-OpenCV-Raspberry-Pi | Jetson Nano 
 Native build of Qt5 creator on Raspberry Pi 4 or Jetson Nano with OpenCV support
 ## A live camera C++ example on a Raspberry Pi 4 / Jetson Nano with Qt5 GUI using OpenCV <br/> 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)<br/><br/>
