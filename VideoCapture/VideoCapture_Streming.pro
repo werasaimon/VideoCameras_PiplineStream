@@ -11,9 +11,9 @@ CONFIG += c++11
 
 #DEFINES += ENABLED_NVIDIA_JETSON
 
-
+INCLUDEPATH += /usr/include/libirimager
 INCLUDEPATH += /usr/include/opencv4
-DEPENDPATH += /usr/include/opencv4
+DEPENDPATH  += /usr/include/opencv4
 
 #set package support if disabled
 QT_CONFIG -= no-pkg-config
@@ -32,12 +32,13 @@ LIBS += -L/usr/lib \
         -lopencv_features2d \
 #        -lopencv_tracking \
         -lopencv_dnn \
+        -lirdirectsdk \
+        -ludev \
+        -lpthread \
+        -lusb-1.0
 #        -L/usr/local/cuda
 #        -lcuda \
 #        -lcudar \
-
-LIBS += -pthread
-
 
 
 #INCLUDEPATH += /usr/local/include
@@ -51,13 +52,18 @@ PKGCONFIG += xrandr xi x11  opencv4  freetype2
 
 SOURCES += main.cpp \
     ../Common/IVideoThread.cpp \
+    ../Common/IVideoThreadThermalCam.cpp \
     ../Common/blockreader.cpp \
     ../Common/blockwriter.cpp \
     itcpserver.cpp
 
 HEADERS += \
     ../Common/IVideoThread.h \
+    ../Common/IVideoThreadThermalCam.h \
     ../Common/blockreader.h \
     ../Common/blockwriter.h \
     ../Common/scommand.hpp \
     itcpserver.h
+
+RESOURCES += \
+    resources.qrc

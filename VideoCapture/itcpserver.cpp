@@ -1,6 +1,7 @@
 #include "itcpserver.h"
 #include <QDebug>
 #include <QCoreApplication>
+#include <QFile>
 
 #include "../Common/blockreader.h"
 #include "../Common/scommand.hpp"
@@ -165,25 +166,79 @@ void ITcpServer::startcam(QStringList list)
         ip = m_IPClient.toStdString();
     }
 
+    //--------------------------------------//
+    if (QFile::exists("ccgenericc2.xml"))
+    {
+        QFile::remove("ccgenericc2.xml");
+        std::cout << "DELETE  ccgenericc.xml" << std::endl;
+    }
+    if (QFile::copy(":/genericc.xml", "ccgenericc2.xml"))
+    {
+        std::cout << "YES COPY FILE  ccgenericc.xml" << std::endl;
+    }
+
+    //--------------------------------------------------------------//
+
+//        thread[0] = new IVideoThreadThermalCam(nullptr,"ccgenericc2.xml");
+
+//        if(static_cast<IVideoThreadThermalCam*>(thread[0])->err == 0)
+//        {
+//            if(codec == "H264")
+//            {
+//                int fourcc = cv::VideoWriter::fourcc('H','2','6','4');
+//                thread[0]->VideoWriter().open(cm::udp_gst_H264_send_video(ip,5000,bitrate),
+//                                              fourcc, (double)30, cv::Size(640, 480), true);
+//                std::cout << "Initilize Thermal : H264 \n";
+//                *this << ( "Initilize Thermal : H264 \n" );
+//            }
+//            else if(codec == "JPEG")
+//            {
+//                int fourcc = cv::VideoWriter::fourcc('J','P','E','G');
+//                thread[0]->VideoWriter().open(cm::udp_gst_JPEG_send_video(ip,5000),
+//                                              fourcc, (double)30, cv::Size(640, 480), true);
+//                std::cout << "Initilize Thermal : JPEG \n";
+//                *this << ( "Initilize Thermal: JPEG \n" );
+//            }
+
+//            if(thread[0]->VideoWriter().isOpened())
+//            {
+//                thread[0]->setIsRun(true);
+//                thread[0]->start(QThread::HighestPriority);
+//            }
+//        }
+
     //--------------- Thread Video Capture -----------------//
 
-    const int nn_cameras = (m_NumCam = n_cam);
-    for(int i=0; i<nn_cameras; ++i)
+    const unsigned int nn_cameras = (m_NumCam = n_cam);
+    for(unsigned int i=0; i<nn_cameras; ++i)
     {
-        thread[i] = new IVideoThread(nullptr);
-        if(thread[i]->VideoCapture().open(cm::gst_pipeline_cams[i]))
+        bool isOK = false;
+        if(i == 0)
+        {
+            thread[i] = new IVideoThreadThermalCam(nullptr,"ccgenericc2.xml");
+            isOK = (static_cast<IVideoThreadThermalCam*>(thread[0])->err == 0);
+        }
+        else
+        {
+            thread[i] = new IVideoThread(nullptr);
+            isOK = thread[i]->VideoCapture().open(cm::gst_pipeline_cams[i]);
+        }
+
+        if(isOK == true)
         {
             if(codec == "H264")
             {
                 int fourcc = cv::VideoWriter::fourcc('H','2','6','4');
-                thread[i]->VideoWriter().open(cm::udp_gst_H264_send_video(ip,5000+i,bitrate),fourcc, (double)30, cv::Size(640, 480), true);
+                thread[i]->VideoWriter().open(cm::udp_gst_H264_send_video(ip,5000+i,bitrate),
+                                              fourcc, (double)30, cv::Size(640, 480), true);
                 std::cout << "Initilize : H264 \n";
                 *this << ( "Initilize : H264 \n" );
             }
             else if(codec == "JPEG")
             {
                 int fourcc = cv::VideoWriter::fourcc('J','P','E','G');
-                thread[i]->VideoWriter().open(cm::udp_gst_JPEG_send_video(ip,5000+i),fourcc, (double)30, cv::Size(640, 480), true);
+                thread[i]->VideoWriter().open(cm::udp_gst_JPEG_send_video(ip,5000+i),
+                                              fourcc, (double)30, cv::Size(640, 480), true);
                 std::cout << "Initilize : JPEG \n";
                 *this << ( "Initilize : JPEG \n" );
             }
@@ -208,6 +263,7 @@ void ITcpServer::scam(QStringList list)
 
         if(comman == "stop")
         {
+
             for(int i=0; i<nn_cameras; ++i)
             {
                 if( thread[i]->getIsRun())
@@ -219,13 +275,14 @@ void ITcpServer::scam(QStringList list)
                 delete  thread[i];
                 thread[i] = nullptr;
             }
-
+            evo_irimager_daemon_kill();
             std::cout << "stop stream thread \n";
             *this <<  "stop stream thread  \n";
 
         }
         else if(comman == "off")
         {
+
             for(int i=0; i<nn_cameras; ++i)
             {
                 if( thread[i]->getIsRun())
@@ -234,11 +291,13 @@ void ITcpServer::scam(QStringList list)
                   thread[i]->exit(0);
                 }
             }
+            ::evo_irimager_terminate();
             std::cout << "stop stream cam \n";
             *this <<  "stop stream cam \n";
         }
         else if(comman == "on")
         {
+
             for(int i=0; i<nn_cameras; ++i)
             {
                 if(!thread[i]->getIsRun())
@@ -250,7 +309,7 @@ void ITcpServer::scam(QStringList list)
                     }
                 }
             }
-
+            evo_irimager_daemon_is_running();
             std::cout << "start stream cam \n";
             *this <<  "start stream cam \n";
             QThread::usleep(100000);

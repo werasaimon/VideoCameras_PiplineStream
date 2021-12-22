@@ -39,8 +39,7 @@ public:
 signals:
     void newPixmapCapture(); //capture a frame
 protected:
-    void run() override;
-private:
+    virtual void run();
     QPixmap mPixmap;              //Qt image
     cv::Mat mFrame;               //OpenCV image
     cv::VideoCapture mVideoCapture;   //video capture

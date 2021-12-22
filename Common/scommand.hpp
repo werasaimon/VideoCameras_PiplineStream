@@ -7,6 +7,8 @@ namespace cm
 #if ENABLED_NVIDIA_JETSON
 static std::string gst_pipeline_cams[]
 {
+    // | Listing Name Cameras | Terminal : > v4l2-ctl --list-devices
+
     "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)640, height=(int)480,format=(string)NV12, framerate=(fraction)30/1 !"
     " nvvidconv ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink",
 
@@ -22,8 +24,9 @@ static std::string gst_pipeline_cams[]
 #else
 static std::string gst_pipeline_cams[]
 {
+    // | Listing Name Cameras | Terminal : > v4l2-ctl --list-devices
 
-    "v4l2src device=/dev/video0 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
+    "v4l2src device=/dev/video2 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
     " videoconvert ! video/x-raw, width=(int)640, height=(int)480, format=(string)RGB ! videoconvert ! appsink",
 
     "v4l2src device=/dev/video2 ! video/x-raw, width=(int)640, height=(int)480, format=(string)YUY2, framerate=(fraction)30/1 !"
