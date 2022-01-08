@@ -17,7 +17,6 @@
 #include <QTimer>
 #include <QDebug>
 
-#include "../Common/IVideoThread.h"
 #include "../Common/IVideoThreadThermalCam.h"
 
 class ITcpServer : public QObject

@@ -24,26 +24,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-INCLUDEPATH += /usr/include/opencv4
-DEPENDPATH += /usr/include/opencv4
-
-#set package support if disabled
-QT_CONFIG -= no-pkg-config
-
-#link opencv4 package
-CONFIG += link_pkgconfig
-PKGCONFIG += opencv4
+include(../Common/Common.pri)
 
 SOURCES += \
-        ../Common/IVideoThread.cpp \
+#        ../Common/IVideoThread.cpp \
         fullwindow.cpp \
         labelvideo.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
-        ../Common/IVideoThread.h \
-        ../Common/scommand.hpp \
+#        ../Common/IVideoThread.h \
+#        ../Common/scommand.hpp \
         fullwindow.h \
         labelvideo.h \
         mainwindow.h

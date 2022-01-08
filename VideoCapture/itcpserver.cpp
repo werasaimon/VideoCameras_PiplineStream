@@ -174,24 +174,24 @@ void ITcpServer::startcam(QStringList list)
     for(int i=0; i < nn_cameras; ++i)
     {
         bool isOK = false;
-        if(i == NUM_THERMAL_CAM)
-        {
-            //--------------------------------------//
-            if (QFile::exists("ccgenericc2.xml"))
-            {
-                QFile::remove("ccgenericc2.xml");
-                std::cout << "DELETE  ccgenericc.xml" << std::endl;
-            }
-            if (QFile::copy(":/genericc.xml", "ccgenericc2.xml"))
-            {
-                std::cout << "YES COPY FILE  ccgenericc.xml" << std::endl;
-            }
-            //--------------------------------------//
+//        if(i == NUM_THERMAL_CAM)
+//        {
+//            //--------------------------------------//
+//            if (QFile::exists("ccgenericc2.xml"))
+//            {
+//                QFile::remove("ccgenericc2.xml");
+//                std::cout << "DELETE  ccgenericc.xml" << std::endl;
+//            }
+//            if (QFile::copy(":/genericc.xml", "ccgenericc2.xml"))
+//            {
+//                std::cout << "YES COPY FILE  ccgenericc.xml" << std::endl;
+//            }
+//            //--------------------------------------//
 
-            thread[i] = new IVideoThreadThermalCam(nullptr,"ccgenericc2.xml");
-            isOK = (static_cast<IVideoThreadThermalCam*>(thread[i])->err == 0);
-        }
-        else
+//            thread[i] = new IVideoThreadThermalCam(nullptr,"ccgenericc2.xml");
+//            isOK = (static_cast<IVideoThreadThermalCam*>(thread[i])->err == 0);
+//        }
+//        else
         {
             thread[i] = new IVideoThread(nullptr);
             isOK = thread[i]->VideoCapture().open(cm::gst_pipeline_cams[i]);
