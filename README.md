@@ -1,10 +1,10 @@
 
 # Install Qt-Creator from Jetson-Nano
-'''shell
+```shel
 sudo apt install qtcreator
 sudo apt install gdb
 sudo apt install qtdeclarative5-dev
-'''
+```
 
 # Qt5-OpenCV-Raspberry-Pi | Jetson Nano 
 Native build of Qt5 creator on Raspberry Pi 4 or Jetson Nano with OpenCV support
